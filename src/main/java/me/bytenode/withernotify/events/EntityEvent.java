@@ -1,5 +1,6 @@
 package me.bytenode.withernotify.events;
 
+import me.bytenode.withernotify.WitherNotify;
 import me.bytenode.withernotify.DiscordWebhook;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -8,8 +9,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import static org.bukkit.Bukkit.broadcast;
-import static org.bukkit.Bukkit.broadcastMessage;
 
 
 public class EntityEvent implements Listener {
@@ -68,13 +67,17 @@ public class EntityEvent implements Listener {
         }
     }
     private void sendDiscordMessage(String message) {
-        DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/1072903373944262656/SSCeCNpwgU1ILa_W0MrfUvU-WRVWMTVSNmxxiA4xxGz64udpRnrILbJtbPHFpQM3lkz0");
+
+        DiscordWebhook webhook = new DiscordWebhook(WitherNotify.instance.getConfig().getString("WebhookURL"));
+        webhook.setTts(true);
         webhook.setContent(message);
         try {
             webhook.execute();
         } catch (MalformedURLException e) {
-            System.out.println("[MinecraftDiscordWebhook] Invalid webhook URL");
+            System.out.println("[WitherNotify] Webhook URL isn't set or invalid! Check CustomConfig.yml");
 
+        } catch (NullPointerException e){
+            System.out.println("[WitherNotify] Webhook URL isn't set or invalid! Check CustomConfig.yml");
         }
         catch (IOException e) {
             e.printStackTrace();
