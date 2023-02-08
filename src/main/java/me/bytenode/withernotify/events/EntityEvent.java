@@ -1,11 +1,14 @@
 package me.bytenode.withernotify.events;
 
-import org.bukkit.entity.Wither;
+import me.bytenode.withernotify.DiscordWebhook;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
+import java.io.IOException;
+import java.net.MalformedURLException;
 
+import static org.bukkit.Bukkit.broadcast;
 import static org.bukkit.Bukkit.broadcastMessage;
 
 
@@ -21,20 +24,25 @@ public class EntityEvent implements Listener {
 
         switch(world) {
             case("world"):
-                broadcastMessage("Wither spawned at Overworld " + location);
+                String message = "Wither spawned at Overworld " + location;
+                broadcast(message, "withernotify.see");
+                sendDiscordMessage(message);
                 break;
             case("world_nether"):
-                broadcastMessage("Wither spawned at Nether " + location);
+                message = "Wither spawned at Nether " + location;
+                broadcast(message, "withernotify.see");
+                sendDiscordMessage(message);;
                 break;
             case("world_the_end"):
-                broadcastMessage("Wither spawned at The End " + location);
+                message = "Wither spawned at The End " + location;
+                broadcast(message, "withernotify.see");
+                sendDiscordMessage(message);
                 break;
         }
     }
     @EventHandler
     public void onWitherKill(EntityDeathEvent entity){
         if (!entity.getEntity().getType().getName().equals("WitherBoss")) {
-            broadcastMessage("Bang");
             return;
         }
         String world = entity.getEntity().getWorld().getName();
@@ -43,14 +51,33 @@ public class EntityEvent implements Listener {
 
         switch(world) {
             case("world"):
-                broadcastMessage("Wither killed by "+ killer + " at Overworld! " + location);
+                String message = "Wither killed by "+ killer + " at Overworld! " + location;
+                broadcast(message, "withernotify.see");
+                sendDiscordMessage(message);
                 break;
             case("world_nether"):
-                broadcastMessage("Wither killed by "+ killer + " at Nether! " + location);
+                message = "Wither killed by "+ killer + " at Nether! " + location;
+                broadcast(message, "withernotify.see");
+                sendDiscordMessage(message);
                 break;
             case("world_the_end"):
-                broadcastMessage("Wither killed by "+ killer + " at The End! " + location);
+                message = "Wither killed by "+ killer + " at The End! " + location;
+                broadcast(message, "withernotify.see");
+                sendDiscordMessage(message);
                 break;
+        }
+    }
+    private void sendDiscordMessage(String message) {
+        DiscordWebhook webhook = new DiscordWebhook("https://discord.com/api/webhooks/1072903373944262656/SSCeCNpwgU1ILa_W0MrfUvU-WRVWMTVSNmxxiA4xxGz64udpRnrILbJtbPHFpQM3lkz0");
+        webhook.setContent(message);
+        try {
+            webhook.execute();
+        } catch (MalformedURLException e) {
+            System.out.println("[MinecraftDiscordWebhook] Invalid webhook URL");
+
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
