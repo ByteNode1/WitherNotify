@@ -25,17 +25,17 @@ public class EntityEvent implements Listener {
         switch(world) {
             case("world"):
                 String message = "Wither spawned at Overworld " + location;
-                broadcast(message, "withernotify.see");
+                System.out.println(message);
                 sendDiscordMessage(message);
                 break;
             case("world_nether"):
                 message = "Wither spawned at Nether " + location;
-                broadcast(message, "withernotify.see");
+                System.out.println(message);
                 sendDiscordMessage(message);;
                 break;
             case("world_the_end"):
                 message = "Wither spawned at The End " + location;
-                broadcast(message, "withernotify.see");
+                System.out.println(message);
                 sendDiscordMessage(message);
                 break;
         }
@@ -52,17 +52,17 @@ public class EntityEvent implements Listener {
         switch(world) {
             case("world"):
                 String message = "Wither killed by "+ killer + " at Overworld! " + location;
-                broadcast(message, "withernotify.see");
+                System.out.println(message);
                 sendDiscordMessage(message);
                 break;
             case("world_nether"):
                 message = "Wither killed by "+ killer + " at Nether! " + location;
-                broadcast(message, "withernotify.see");
+                System.out.println(message);
                 sendDiscordMessage(message);
                 break;
             case("world_the_end"):
                 message = "Wither killed by "+ killer + " at The End! " + location;
-                broadcast(message, "withernotify.see");
+                System.out.println(message);
                 sendDiscordMessage(message);
                 break;
         }
